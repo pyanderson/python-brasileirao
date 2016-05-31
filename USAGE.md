@@ -34,7 +34,7 @@ Campeonato
     
 Equipe
 ------
-    >>> equipe = campeonato.get('76')
+    >>> equipe = campeonato.equipes.get('76')
     >>> equipe
     Sport Clube Recife
     >>> equipe = campeonato.classificacao[19]
