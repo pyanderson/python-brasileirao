@@ -18,6 +18,7 @@ setup(
     platforms='any',
     url='https://github.com/TheKiller666/python-brasileirao',
     install_requires=[
-        'requests'
+        'requests',
+        'inflection'
     ]
 )
