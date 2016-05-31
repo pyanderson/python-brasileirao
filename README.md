@@ -24,7 +24,7 @@ Uso
     Cruz Futebol Clube, Sport Club Corinthians Paulista, Clube de Reg...
     >>> campeonato.classificacao[0].gp.total
     '6'
- Mais em [USAGE.md](../blob/master/USAGE.md)
+ Mais em [USAGE.md](../master/USAGE.md)
     
 
 Requisitos
