@@ -4,7 +4,11 @@ import json
 import requests
 import inflection
 
-from utils import to_unicode
+
+def to_unicode(string):
+    if string:
+        return u''.join(string).encode('utf-8').strip()
+    return u''
 
 
 class Base:
