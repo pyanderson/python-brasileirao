@@ -17,7 +17,6 @@ setup(
     py_modules=['brasileirao'],
     platforms='any',
     url='https://github.com/TheKiller666/python-brasileirao',
-    packages=['python-brasileirao'],
     install_requires=[
         'requests'
     ]
