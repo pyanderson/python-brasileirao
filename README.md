@@ -5,7 +5,7 @@ Python Brasileirão
  
 Instalação
 ----------
-    pip install git+https://github.com/TheKiller666/python-brasileirao
+    pip install git+https://github.com/pyanderson/python-brasileirao
 
 Uso
 ---
