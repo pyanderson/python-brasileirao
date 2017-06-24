@@ -64,7 +64,7 @@ class Equipe(Base):
 
 class Campeonato:
     URL = 'http://jsuol.com.br/c/monaco/utils/gestor/commons.js?callback=simulador_dados_jsonp&' \
-          'file=commons.uol.com.br/sistemas/esporte/modalidades/futebol/campeonatos/dados/2016/30/dados.json'
+          'file=commons.uol.com.br/sistemas/esporte/modalidades/futebol/campeonatos/dados/2017/30/dados.json'
     _response = None
     _json = None
     nome_completo = ''
@@ -92,16 +92,16 @@ class Campeonato:
             self.nome_completo = self._json.get('nome-completo')
             for k, v in self._json.get('equipes').items():
                 self.equipes[k] = Equipe(v)
-            self.rodada = Rodada(self._json.get('fases').get('2357').get('rodada'))
-            for e, d in self._json.get('fases').get('2357').get('classificacao').get('equipe').items():
+            self.rodada = Rodada(self._json.get('fases').get('2528').get('rodada'))
+            for e, d in self._json.get('fases').get('2528').get('classificacao').get('equipe').items():
                 for k, v in d.items():
                     if isinstance(v, dict):
                         setattr(self.equipes[e], inflection.underscore(snake_string(k)), Base(v))
                     else:
                         setattr(self.equipes[e], inflection.underscore(snake_string(k)), snake_string(v))
-            for k, v in self._json.get('fases').get('2357').get('jogos').get('id').items():
+            for k, v in self._json.get('fases').get('2528').get('jogos').get('id').items():
                 self.jogos[k] = Jogo(v, self.equipes)
-            for v in self._json.get('fases').get('2357').get('classificacao').get('grupo').values():
+            for v in self._json.get('fases').get('2528').get('classificacao').get('grupo').values():
                 for k in v:
                     self.classificacao.append(self.equipes[k])
         except Exception as inst:
