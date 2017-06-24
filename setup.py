@@ -8,7 +8,7 @@ README = os.path.join(os.path.dirname(__file__), 'README.md')
 
 setup(
     name='python-brasileirao',
-    version='0.0.2',
+    version='1.0.0',
     description='',
     long_description=open(README).read(),
     author='Anderson Lima',
