@@ -5,10 +5,10 @@ import requests
 import inflection
 
 
-def to_unicode(string):
+def snake_string(string):
     if string:
-        return u''.join(string).encode('utf-8').strip()
-    return u''
+        return ''.join(string).strip()
+    return string
 
 
 class Base:
@@ -20,9 +20,9 @@ class Base:
     def __update__(self):
         for k, v in self.obj.items():
             if isinstance(v, dict):
-                setattr(self, inflection.underscore(to_unicode(k)), Base(v))
+                setattr(self, inflection.underscore(snake_string(k)), Base(v))
             else:
-                setattr(self, inflection.underscore(to_unicode(k)), to_unicode(v))
+                setattr(self, inflection.underscore(snake_string(k)), snake_string(v))
 
 
 class Jogo:
@@ -38,9 +38,9 @@ class Jogo:
             equipes = {}
         for k, v in self.obj.items():
             if isinstance(v, dict):
-                setattr(self, inflection.underscore(to_unicode(k)), Base(v))
+                setattr(self, inflection.underscore(snake_string(k)), Base(v))
             else:
-                setattr(self, inflection.underscore(to_unicode(k)), to_unicode(v))
+                setattr(self, inflection.underscore(snake_string(k)), snake_string(v))
         time1 = self.obj.get('time1')
         time2 = self.obj.get('time2')
         if time1:
@@ -96,9 +96,9 @@ class Campeonato:
             for e, d in self._json.get('fases').get('2357').get('classificacao').get('equipe').items():
                 for k, v in d.items():
                     if isinstance(v, dict):
-                        setattr(self.equipes[e], inflection.underscore(to_unicode(k)), Base(v))
+                        setattr(self.equipes[e], inflection.underscore(snake_string(k)), Base(v))
                     else:
-                        setattr(self.equipes[e], inflection.underscore(to_unicode(k)), to_unicode(v))
+                        setattr(self.equipes[e], inflection.underscore(snake_string(k)), snake_string(v))
             for k, v in self._json.get('fases').get('2357').get('jogos').get('id').items():
                 self.jogos[k] = Jogo(v, self.equipes)
             for k in self._json.get('fases').get('2357').get('classificacao').get('grupo').items()[0][1]:
