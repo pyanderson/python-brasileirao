@@ -4,7 +4,7 @@ import sys
 import traceback
 
 import requests
-import inflection
+from inflection import underscore
 
 
 def snake_string(string):
@@ -22,9 +22,9 @@ class Base:
     def __update__(self):
         for k, v in self.obj.items():
             if isinstance(v, dict):
-                setattr(self, inflection.underscore(snake_string(k)), Base(v))
+                setattr(self, underscore(snake_string(k)), Base(v))
             else:
-                setattr(self, inflection.underscore(snake_string(k)), snake_string(v))
+                setattr(self, underscore(snake_string(k)), snake_string(v))
 
 
 class Jogo:
@@ -40,15 +40,15 @@ class Jogo:
             equipes = {}
         for k, v in self.obj.items():
             if isinstance(v, dict):
-                setattr(self, inflection.underscore(snake_string(k)), Base(v))
+                setattr(self, underscore(snake_string(k)), Base(v))
             else:
-                setattr(self, inflection.underscore(snake_string(k)), snake_string(v))
-        time1 = self.obj.get('time1')
-        time2 = self.obj.get('time2')
+                setattr(self, underscore(snake_string(k)), snake_string(v))
+        time1 = self.obj['time1']
+        time2 = self.obj['time2']
         if time1:
-            self.time1 = equipes.get(time1)
+            self.time1 = equipes[time1]
         if time2:
-            self.time2 = equipes.get(time2)
+            self.time2 = equipes[time2]
 
     def __repr__(self):
         return self.time1.__repr__() + ' x ' + self.time2.__repr__()
@@ -65,17 +65,18 @@ class Equipe(Base):
 
 
 class Campeonato:
-    URL = 'http://jsuol.com.br/c/monaco/utils/gestor/commons.js?callback=simulador_dados_jsonp&' \
-          'file=commons.uol.com.br/sistemas/esporte/modalidades/futebol/campeonatos/dados/2017/30/dados.json'
-    _response = None
-    _json = None
-    nome_completo = ''
-    equipes = {}
-    classificacao = []
-    rodada = None
-    jogos = {}
+    URL = ('http://jsuol.com.br/c/monaco/utils/gestor/commons.js?callback='
+           'simulador_dados_jsonp&file=commons.uol.com.br/sistemas/esporte'
+           '/modalidades/futebol/campeonatos/dados/2017/30/dados.json')
 
     def __init__(self):
+        self._response = None
+        self._json = None
+        self.nome_completo = ''
+        self.equipes = {}
+        self.classificacao = []
+        self.rodada = None
+        self.jogos = {}
         self.get()
 
     def get_jogos_rodada(self, rodada=None):
@@ -90,20 +91,31 @@ class Campeonato:
     def get(self):
         try:
             self._response = requests.get(self.URL)
-            self._json = json.loads(self._response.text[22:len(self._response.text)-3])
-            self.nome_completo = self._json.get('nome-completo')
-            for k, v in self._json.get('equipes').items():
+            self._json = json.loads(
+                self._response.text[22:len(self._response.text)-3]
+            )
+            self.nome_completo = self._json['nome-completo']
+            for k, v in self._json['equipes'].items():
                 self.equipes[k] = Equipe(v)
-            self.rodada = Rodada(self._json.get('fases').get('2528').get('rodada'))
-            for e, d in self._json.get('fases').get('2528').get('classificacao').get('equipe').items():
+            fases = self._json['fases']['2528']
+            self.rodada = Rodada(fases['rodada'])
+            for e, d in fases['classificacao']['equipe'].items():
                 for k, v in d.items():
                     if isinstance(v, dict):
-                        setattr(self.equipes[e], inflection.underscore(snake_string(k)), Base(v))
+                        setattr(
+                            self.equipes[e],
+                            underscore(snake_string(k)),
+                            Base(v)
+                        )
                     else:
-                        setattr(self.equipes[e], inflection.underscore(snake_string(k)), snake_string(v))
-            for k, v in self._json.get('fases').get('2528').get('jogos').get('id').items():
+                        setattr(
+                            self.equipes[e],
+                            underscore(snake_string(k)),
+                            snake_string(v)
+                        )
+            for k, v in fases['jogos']['id'].items():
                 self.jogos[k] = Jogo(v, self.equipes)
-            for v in self._json.get('fases').get('2528').get('classificacao').get('grupo').values():
+            for v in fases['classificacao']['grupo'].values():
                 for k in v:
                     self.classificacao.append(self.equipes[k])
         except:
