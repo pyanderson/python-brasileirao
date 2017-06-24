@@ -1,5 +1,7 @@
 # -*- coding: utf8 -*-
 import json
+import sys
+import traceback
 
 import requests
 import inflection
@@ -104,9 +106,8 @@ class Campeonato:
             for v in self._json.get('fases').get('2528').get('classificacao').get('grupo').values():
                 for k in v:
                     self.classificacao.append(self.equipes[k])
-        except Exception as inst:
-            print(inst)
-            print(inst.args)
+        except:
+            traceback.print_exc(file=sys.stdout)
 
 
 def get():
