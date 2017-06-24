@@ -101,8 +101,9 @@ class Campeonato:
                         setattr(self.equipes[e], inflection.underscore(snake_string(k)), snake_string(v))
             for k, v in self._json.get('fases').get('2357').get('jogos').get('id').items():
                 self.jogos[k] = Jogo(v, self.equipes)
-            for k in self._json.get('fases').get('2357').get('classificacao').get('grupo').items()[0][1]:
-                self.classificacao.append(self.equipes[k])
+            for v in self._json.get('fases').get('2357').get('classificacao').get('grupo').values():
+                for k in v:
+                    self.classificacao.append(self.equipes[k])
         except Exception as inst:
             print(inst)
             print(inst.args)
