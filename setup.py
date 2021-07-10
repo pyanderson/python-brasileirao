@@ -1,7 +1,6 @@
-# -*- coding: utf8 -*-
-from setuptools import setup
 import os
 
+from setuptools import setup
 
 README = os.path.join(os.path.dirname(__file__), 'README.md')
 
@@ -14,9 +13,9 @@ setup(
     author='Anderson Lima',
     author_email='anderson.sl93@hotmail.com',
     license="MIT",
-    py_modules=['brasileirao', 'utils'],
+    py_modules=['brasileirao'],
     platforms='any',
-    url='https://github.com/TheKiller666/python-brasileirao',
+    url='https://github.com/pyanderson/python-brasileirao',
     install_requires=[
         'requests',
         'inflection'

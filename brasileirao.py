@@ -1,4 +1,3 @@
-# -*- coding: utf8 -*-
 import json
 import sys
 import traceback
@@ -67,7 +66,7 @@ class Equipe(Base):
 class Campeonato:
     URL = ('http://jsuol.com.br/c/monaco/utils/gestor/commons.js?callback='
            'simulador_dados_jsonp&file=commons.uol.com.br/sistemas/esporte'
-           '/modalidades/futebol/campeonatos/dados/2017/30/dados.json')
+           '/modalidades/futebol/campeonatos/dados/2021/30/dados.json')
 
     def __init__(self):
         self._response = None
@@ -83,7 +82,7 @@ class Campeonato:
         if not rodada:
             rodada = self.rodada.atual
         jogos = []
-        for k, v in self.jogos.items():
+        for _, v in self.jogos.items():
             if v.rodada == rodada:
                 jogos.append(v)
         return jogos
@@ -97,7 +96,7 @@ class Campeonato:
             self.nome_completo = self._json['nome-completo']
             for k, v in self._json['equipes'].items():
                 self.equipes[k] = Equipe(v)
-            fases = self._json['fases']['2528']
+            fases = self._json['fases']['3275']
             self.rodada = Rodada(fases['rodada'])
             for e, d in fases['classificacao']['equipe'].items():
                 for k, v in d.items():
@@ -118,9 +117,14 @@ class Campeonato:
             for v in fases['classificacao']['grupo'].values():
                 for k in v:
                     self.classificacao.append(self.equipes[k])
-        except:
+        except Exception:
             traceback.print_exc(file=sys.stdout)
 
 
 def get():
     return Campeonato()
+
+
+if __name__ == '__main__':
+    campeonato = get()
+    print(campeonato.get_jogos_rodada())
